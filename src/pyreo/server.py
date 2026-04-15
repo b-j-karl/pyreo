@@ -43,6 +43,30 @@ def build_completion_items(
     return items
 
 
+def _word_at_position(line: str, character: int) -> str:
+    """Extract the word at the given character position in a line."""
+    pattern = re.compile(r'[\w\u0100-\u017F]+')
+    for match in pattern.finditer(line):
+        if match.start() <= character <= match.end():
+            return match.group()
+    return ""
+
+
+def build_hover_response(
+    word: str,
+    descriptions: dict[str, DescriptionEntry],
+) -> types.Hover | None:
+    if not word or word not in descriptions:
+        return None
+    entry = descriptions[word]
+    return types.Hover(
+        contents=types.MarkupContent(
+            kind=types.MarkupKind.Markdown,
+            value=entry.documentation,
+        )
+    )
+
+
 def _find_keywords_dir() -> Path:
     candidates = [
         Path.cwd() / "keywords",
@@ -65,6 +89,13 @@ def create_server() -> tuple[LanguageServer, Dictionary, dict[str, DescriptionEn
     @server.feature(types.TEXT_DOCUMENT_COMPLETION)
     def completions(params: types.CompletionParams):
         return types.CompletionList(is_incomplete=False, items=completion_items)
+
+    @server.feature(types.TEXT_DOCUMENT_HOVER)
+    def hover(params: types.HoverParams):
+        doc = server.workspace.get_text_document(params.text_document.uri)
+        line = doc.lines[params.position.line]
+        word = _word_at_position(line, params.position.character)
+        return build_hover_response(word, descriptions)
 
     return server, dictionary, descriptions
 

@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from pyreo.server import build_completion_items
+from pyreo.server import build_completion_items, build_hover_response
 
 
 @pytest.fixture
@@ -52,3 +52,24 @@ class TestCompletions:
         items = build_completion_items(descriptions)
         tau = next(i for i in items if i.label == "tau")
         assert tau.kind == CompletionItemKind.Class
+
+
+class TestHover:
+    def test_returns_hover_for_known_keyword(self, descriptions):
+        result = build_hover_response("mena", descriptions)
+        assert result is not None
+        assert "if" in result.contents.value
+
+    def test_returns_hover_for_known_builtin(self, descriptions):
+        result = build_hover_response("tā", descriptions)
+        assert result is not None
+        assert "print" in result.contents.value
+        assert "Show" in result.contents.value
+
+    def test_returns_none_for_unknown_word(self, descriptions):
+        result = build_hover_response("unknown_variable", descriptions)
+        assert result is None
+
+    def test_returns_none_for_empty_word(self, descriptions):
+        result = build_hover_response("", descriptions)
+        assert result is None
