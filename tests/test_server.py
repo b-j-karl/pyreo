@@ -2,7 +2,8 @@ from pathlib import Path
 
 import pytest
 
-from pyreo.server import build_completion_items, build_hover_response
+from lsprotocol import types
+from pyreo.server import build_completion_items, build_hover_response, get_diagnostics
 
 
 @pytest.fixture
@@ -73,3 +74,33 @@ class TestHover:
     def test_returns_none_for_empty_word(self, descriptions):
         result = build_hover_response("", descriptions)
         assert result is None
+
+
+class TestDiagnostics:
+    def test_valid_code_returns_no_diagnostics(self, dictionary):
+        source = 'tā("Kia ora")'
+        diags = get_diagnostics(source, dictionary)
+        assert diags == []
+
+    def test_syntax_error_returns_diagnostic(self, dictionary):
+        source = "mena x ==:\n    tā(x)"
+        diags = get_diagnostics(source, dictionary)
+        assert len(diags) == 1
+        assert diags[0].severity == types.DiagnosticSeverity.Error
+        assert "SyntaxError" in diags[0].message or "syntax" in diags[0].message.lower()
+
+    def test_diagnostic_has_correct_line(self, dictionary):
+        source = "x = 5\nmena x ==:\n    tā(x)"
+        diags = get_diagnostics(source, dictionary)
+        assert len(diags) == 1
+        assert diags[0].range.start.line >= 0
+
+    def test_indentation_error_returns_diagnostic(self, dictionary):
+        source = "mena pono:\ntā('bad indent')"
+        diags = get_diagnostics(source, dictionary)
+        assert len(diags) >= 1
+
+    def test_multiline_valid_code(self, dictionary):
+        source = "tautuhi mihi(ingoa):\n    whakahoki f'Kia ora {ingoa}'\n\ntā(mihi('Aotearoa'))"
+        diags = get_diagnostics(source, dictionary)
+        assert diags == []

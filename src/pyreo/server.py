@@ -67,6 +67,42 @@ def build_hover_response(
     )
 
 
+def get_diagnostics(
+    source: str,
+    dictionary: Dictionary,
+) -> list[types.Diagnostic]:
+    try:
+        python_code = translate(source, dictionary)
+        compile(python_code, "<pyreo>", "exec")
+        return []
+    except SyntaxError as e:
+        line = max((e.lineno or 1) - 1, 0)
+        col = max((e.offset or 1) - 1, 0)
+        return [
+            types.Diagnostic(
+                range=types.Range(
+                    start=types.Position(line=line, character=col),
+                    end=types.Position(line=line, character=col + 1),
+                ),
+                severity=types.DiagnosticSeverity.Error,
+                source="pyreo",
+                message=f"SyntaxError: {e.msg}",
+            )
+        ]
+    except Exception as e:
+        return [
+            types.Diagnostic(
+                range=types.Range(
+                    start=types.Position(line=0, character=0),
+                    end=types.Position(line=0, character=1),
+                ),
+                severity=types.DiagnosticSeverity.Error,
+                source="pyreo",
+                message=str(e),
+            )
+        ]
+
+
 def _find_keywords_dir() -> Path:
     candidates = [
         Path.cwd() / "keywords",
@@ -96,6 +132,24 @@ def create_server() -> tuple[LanguageServer, Dictionary, dict[str, DescriptionEn
         line = doc.lines[params.position.line]
         word = _word_at_position(line, params.position.character)
         return build_hover_response(word, descriptions)
+
+    @server.feature(types.TEXT_DOCUMENT_DID_OPEN)
+    def did_open(params: types.DidOpenTextDocumentParams):
+        doc = server.workspace.get_text_document(params.text_document.uri)
+        diags = get_diagnostics(doc.source, dictionary)
+        server.publish_diagnostics(params.text_document.uri, diags)
+
+    @server.feature(types.TEXT_DOCUMENT_DID_CHANGE)
+    def did_change(params: types.DidChangeTextDocumentParams):
+        doc = server.workspace.get_text_document(params.text_document.uri)
+        diags = get_diagnostics(doc.source, dictionary)
+        server.publish_diagnostics(params.text_document.uri, diags)
+
+    @server.feature(types.TEXT_DOCUMENT_DID_SAVE)
+    def did_save(params: types.DidSaveTextDocumentParams):
+        doc = server.workspace.get_text_document(params.text_document.uri)
+        diags = get_diagnostics(doc.source, dictionary)
+        server.publish_diagnostics(params.text_document.uri, diags)
 
     return server, dictionary, descriptions
 
