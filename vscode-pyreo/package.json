@@ -1,13 +1,17 @@
 {
   "name": "pyreo",
   "displayName": "PyReo",
-  "description": "Syntax highlighting for PyReo — Python in te reo Māori",
-  "version": "0.1.0",
+  "description": "Language support for PyReo — Python in te reo Maori",
+  "version": "0.2.0",
   "publisher": "pyreo",
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": ["Programming Languages"],
+  "activationEvents": [
+    "onLanguage:pyreo"
+  ],
+  "main": "./extension.js",
   "contributes": {
     "languages": [
       {
@@ -16,8 +20,8 @@
         "extensions": [".pyreo"],
         "configuration": "./language-configuration.json",
         "icon": {
-          "light": "./icon.png",
-          "dark": "./icon.png"
+          "light": "./icon.svg",
+          "dark": "./icon.svg"
         }
       }
     ],
@@ -27,6 +31,24 @@
         "scopeName": "source.pyreo",
         "path": "./syntaxes/pyreo.tmLanguage.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "PyReo",
+      "properties": {
+        "pyreo.pythonPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to Python executable (must have pyreo installed). Leave empty to auto-detect."
+        },
+        "pyreo.keywordsPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to keywords/ directory. Leave empty to auto-detect."
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.0"
   }
 }
