@@ -18,7 +18,7 @@ You **do not** need to know how to code to help with this.
 2. For each row, look at the description and suggest a te reo Māori word that captures that meaning. Add your suggestions in the "Your Suggestion" column.
 3. Email the updated spreadsheet back, or open a pull request with the changes applied to `keywords/mi.json` and `keywords/mi.descriptions.json`.
 
-If you'd like to discuss the keyword choices before suggesting changes, please [open a GitHub issue](https://github.com/YOUR_USERNAME/pyreo/issues). We welcome the kōrero.
+If you'd like to discuss the keyword choices before suggesting changes, please [open a GitHub issue](https://github.com/b-j-karl/pyreo/issues). We welcome the kōrero.
 
 ### What we're looking for
 
@@ -39,7 +39,7 @@ We're explicitly NOT looking to:
 Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pyreo.git
+git clone https://github.com/b-j-karl/pyreo.git
 cd pyreo
 uv sync
 ```
