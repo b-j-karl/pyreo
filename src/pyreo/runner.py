@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import sys
 import traceback
 from pathlib import Path
 
@@ -14,6 +15,13 @@ class PyReoError(Exception):
 def run_source(source: str, dictionary: Dictionary, filename: str = "<pyreo>") -> None:
     """Translate and execute PyReo source code."""
     python_code = translate(source, dictionary)
+
+    # Ensure stdout/stderr use UTF-8 so Māori macron characters print correctly
+    # on Windows (default cp1252 cannot encode them).
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8")
 
     try:
         compiled = compile(python_code, filename, "exec")

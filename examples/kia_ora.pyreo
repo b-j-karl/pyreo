@@ -1,0 +1,8 @@
+# Ko tāku kaupapa tuatahi ki PyReo
+# My first PyReo program
+
+tā("Kia ora, te ao!")
+tā("Ko PyReo tōku reo rorohiko")
+
+ingoa = pātai("Ko wai tō ingoa? ")
+tā(f"Kia ora, {ingoa}!")

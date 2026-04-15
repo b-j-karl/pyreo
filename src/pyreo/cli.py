@@ -26,6 +26,12 @@ def _find_dictionary() -> Path:
 
 
 def main(argv: list[str] | None = None) -> None:
+    # Ensure stdout and stderr use UTF-8 on Windows (cp1252 can't encode macrons).
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    if hasattr(sys.stderr, "reconfigure"):
+        sys.stderr.reconfigure(encoding="utf-8")
+
     parser = argparse.ArgumentParser(
         prog="pyreo",
         description="PyReo - Write Python in te reo Maori",

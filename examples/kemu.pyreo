@@ -1,0 +1,27 @@
+# Kemu Matapōkere — Number Guessing Game
+
+mai random kawemai randint
+
+tau_huna = randint(1, 20)
+ngana_toenga = 5
+
+tā("Kia ora! Kei te whakaaro au i tētahi tau mai i te 1 ki te 20.")
+tā(f"E {ngana_toenga} ngā ngana e toe ana.")
+
+ia ngana_toenga > 0:
+    matapōkere = tau(pātai("Tō matapōkere: "))
+
+    mena matapōkere == tau_huna:
+        tā("Ka pai! Tika tō matapōkere! 🎉")
+        waea
+    menaranei matapōkere < tau_huna:
+        tā("Kei raro rawa — whakamātau anō")
+    kē:
+        tā("Kei runga rawa — whakamātau anō")
+
+    ngana_toenga = ngana_toenga - 1
+    mena ngana_toenga > 0:
+        tā(f"E {ngana_toenga} ngā ngana e toe ana.")
+
+mena ngana_toenga == 0:
+    tā(f"Kua pau ngā ngana! Ko te tau ko {tau_huna}.")
