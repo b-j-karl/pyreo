@@ -1,0 +1,32 @@
+{
+  "name": "pyreo",
+  "displayName": "PyReo",
+  "description": "Syntax highlighting for PyReo — Python in te reo Māori",
+  "version": "0.1.0",
+  "publisher": "pyreo",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": ["Programming Languages"],
+  "contributes": {
+    "languages": [
+      {
+        "id": "pyreo",
+        "aliases": ["PyReo", "pyreo"],
+        "extensions": [".pyreo"],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icon.png",
+          "dark": "./icon.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pyreo",
+        "scopeName": "source.pyreo",
+        "path": "./syntaxes/pyreo.tmLanguage.json"
+      }
+    ]
+  }
+}
