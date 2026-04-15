@@ -2,20 +2,47 @@
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "PyReo",
   "scopeName": "source.pyreo",
+  "_generated": "This file is auto-generated from keywords/mi.json. Do not edit manually. Run: uv run python vscode-pyreo/generate.py",
   "patterns": [
-    { "include": "#comments" },
-    { "include": "#strings" },
-    { "include": "#numbers" },
-    { "include": "#keywords-control" },
-    { "include": "#keywords-operator" },
-    { "include": "#keywords-import" },
-    { "include": "#keywords-storage" },
-    { "include": "#keywords-constant" },
-    { "include": "#builtins-functions" },
-    { "include": "#builtins-types" },
-    { "include": "#function-call" },
-    { "include": "#function-def" },
-    { "include": "#class-def" }
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#numbers"
+    },
+    {
+      "include": "#keywords-control"
+    },
+    {
+      "include": "#keywords-operator"
+    },
+    {
+      "include": "#keywords-import"
+    },
+    {
+      "include": "#keywords-storage"
+    },
+    {
+      "include": "#keywords-constant"
+    },
+    {
+      "include": "#builtins-functions"
+    },
+    {
+      "include": "#builtins-types"
+    },
+    {
+      "include": "#function-def"
+    },
+    {
+      "include": "#class-def"
+    },
+    {
+      "include": "#function-call"
+    }
   ],
   "repository": {
     "comments": {
@@ -28,25 +55,53 @@
           "name": "string.quoted.triple.double.pyreo",
           "begin": "f?\"\"\"",
           "end": "\"\"\"",
-          "patterns": [{ "include": "#string-escapes" }, { "include": "#fstring-expressions" }]
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            },
+            {
+              "include": "#fstring-expressions"
+            }
+          ]
         },
         {
           "name": "string.quoted.triple.single.pyreo",
           "begin": "f?'''",
           "end": "'''",
-          "patterns": [{ "include": "#string-escapes" }, { "include": "#fstring-expressions" }]
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            },
+            {
+              "include": "#fstring-expressions"
+            }
+          ]
         },
         {
           "name": "string.quoted.double.pyreo",
           "begin": "f?\"",
           "end": "\"",
-          "patterns": [{ "include": "#string-escapes" }, { "include": "#fstring-expressions" }]
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            },
+            {
+              "include": "#fstring-expressions"
+            }
+          ]
         },
         {
           "name": "string.quoted.single.pyreo",
           "begin": "f?'",
           "end": "'",
-          "patterns": [{ "include": "#string-escapes" }, { "include": "#fstring-expressions" }]
+          "patterns": [
+            {
+              "include": "#string-escapes"
+            },
+            {
+              "include": "#fstring-expressions"
+            }
+          ]
         }
       ]
     },
@@ -59,10 +114,18 @@
       "end": "\\}",
       "name": "meta.fstring.pyreo",
       "patterns": [
-        { "include": "#keywords-constant" },
-        { "include": "#builtins-functions" },
-        { "include": "#builtins-types" },
-        { "include": "#numbers" }
+        {
+          "include": "#keywords-constant"
+        },
+        {
+          "include": "#builtins-functions"
+        },
+        {
+          "include": "#builtins-types"
+        },
+        {
+          "include": "#numbers"
+        }
       ]
     },
     "numbers": {
@@ -86,11 +149,11 @@
       ]
     },
     "keywords-control": {
-      "match": "\\b(mena|menaranei|kē|mō|i|ia|waea|haere_tonu|pahika|ngana|hopu|whakamutunga|whakaarahi|whakahoki|aronga|hei|mā|whakaū|muku)\\b",
+      "match": "\\b(whakamutunga|haere_tonu|whakaarahi|menaranei|whakahoki|pahika|aronga|whakaū|ngana|mena|waea|hopu|muku|hei|kē|mō|ia|mā|i)\\b",
       "name": "keyword.control.pyreo"
     },
     "keywords-operator": {
-      "match": "\\b(me|rānei|ehara|i_roto_i|kāore_i_roto_i|kāore_i)\\b",
+      "match": "\\b(kāore_i_roto_i|i_roto_i|kāore_i|rānei|ehara|me)\\b",
       "name": "keyword.operator.logical.pyreo"
     },
     "keywords-import": {
@@ -98,7 +161,7 @@
       "name": "keyword.control.import.pyreo"
     },
     "keywords-storage": {
-      "match": "\\b(tautuhi|momo|tūhono|whānui|ā_rohe)\\b",
+      "match": "\\b(tautuhi|whānui|ā_rohe|tūhono|momo)\\b",
       "name": "storage.type.pyreo"
     },
     "keywords-constant": {
@@ -106,32 +169,42 @@
       "name": "constant.language.pyreo"
     },
     "builtins-functions": {
-      "match": "\\b(tā|pātai|roa|tūemi|raupapa|tatau|whakatuwhera|katoa|tētahi|pūrongo|tōrahi|tōiti|tapeke|hurihuri|tūtata|tāuru|kōwhiri|tātari)\\b",
+      "match": "\\b(whakatuwhera|hurihuri|raupapa|pūrongo|kōwhiri|tētahi|tōrahi|tapeke|tūtata|tātari|pātai|tūemi|tatau|katoa|tōiti|tāuru|roa|tā)\\b",
       "name": "support.function.builtin.pyreo"
     },
     "builtins-types": {
-      "match": "\\b(tau|tāputa|kupu|rārangi|taupā|mahere|huinga|tōpū)\\b",
+      "match": "\\b(rārangi|tāputa|mahere|huinga|taupā|kupu|tōpū|tau)\\b",
       "name": "support.type.pyreo"
     },
     "function-def": {
       "match": "\\b(tautuhi)\\s+([\\w\\u0100-\\u017F]+)\\s*\\(",
       "captures": {
-        "1": { "name": "storage.type.function.pyreo" },
-        "2": { "name": "entity.name.function.pyreo" }
+        "1": {
+          "name": "storage.type.function.pyreo"
+        },
+        "2": {
+          "name": "entity.name.function.pyreo"
+        }
       }
     },
     "class-def": {
       "match": "\\b(momo)\\s+([\\w\\u0100-\\u017F]+)",
       "captures": {
-        "1": { "name": "storage.type.class.pyreo" },
-        "2": { "name": "entity.name.type.class.pyreo" }
+        "1": {
+          "name": "storage.type.class.pyreo"
+        },
+        "2": {
+          "name": "entity.name.type.class.pyreo"
+        }
       }
     },
     "function-call": {
       "match": "\\b([\\w\\u0100-\\u017F]+)\\s*(?=\\()",
       "name": "meta.function-call.pyreo",
       "captures": {
-        "1": { "name": "entity.name.function.pyreo" }
+        "1": {
+          "name": "entity.name.function.pyreo"
+        }
       }
     }
   }
