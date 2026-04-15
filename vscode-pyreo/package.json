@@ -8,6 +8,7 @@
     "vscode": "^1.75.0"
   },
   "categories": ["Programming Languages"],
+  "icon": "icon.png",
   "activationEvents": [
     "onLanguage:pyreo"
   ],
@@ -20,8 +21,8 @@
         "extensions": [".pyreo"],
         "configuration": "./language-configuration.json",
         "icon": {
-          "light": "./icon.svg",
-          "dark": "./icon.svg"
+          "light": "./icon.png",
+          "dark": "./icon.png"
         }
       }
     ],

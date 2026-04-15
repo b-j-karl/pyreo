@@ -1,0 +1,8 @@
+.vscode/**
+.vscodeignore
+generate.py
+package-lock.json
+icon.svg
+**/.DS_Store
+**/tsconfig.json
+**/.eslintrc.json
