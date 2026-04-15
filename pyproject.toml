@@ -5,6 +5,10 @@ description = "Write Python in te reo Māori"
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
+dependencies = [
+    "openpyxl>=3.1.5",
+    "pygls>=2.1.1",
+]
 
 [project.scripts]
 pyreo = "pyreo.cli:main"
