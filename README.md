@@ -1,12 +1,16 @@
+<p align="center">
+  <img src="vscode-pyreo/icon.svg" alt="PyReo" width="160">
+</p>
+
 # PyReo
 
-[![Tests](https://github.com/YOUR_USERNAME/pyreo/actions/workflows/tests.yml/badge.svg)](https://github.com/YOUR_USERNAME/pyreo/actions/workflows/tests.yml)
+[![Tests](https://github.com/b-j-karl/pyreo/actions/workflows/tests.yml/badge.svg)](https://github.com/b-j-karl/pyreo/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 
 **Write Python in te reo Māori.**
 
-PyReo is an open-source programming language designed for kura kaupapa Māori students learning to code. It's a thin wrapper around Python where the keywords are in te reo Māori — so `mena` is `if`, `mō` is `for`, `tā` is `print`. Under the hood it's real Python, so everything students learn transfers when they're ready to work in English-medium Python.
+PyReo is an open-source programming language designed for tamariki Māori learning to code. It's a thin wrapper around Python where the keywords are in te reo Māori. So `mena` is `if`, `mō` is `for`, `tā` is `print`. Under the hood it's real Python, so everything tamariki learn transfers when they're ready to work in English-medium Python.
 
 ```python
 # Kia ora, te ao!
@@ -18,9 +22,9 @@ tā(mihi("Aotearoa"))
 
 ---
 
-## ⚠️ Draft status — not ready for classroom use
+## ⚠️ Draft status - not ready for educational use
 
-The te reo Māori keyword choices in `keywords/mi.json` are **draft placeholders**. They have **not** been reviewed or validated by fluent te reo Māori speakers. Before this is used with learners, those keywords need to be reviewed — and likely changed — by people with the right cultural and linguistic expertise.
+The te reo Māori keyword choices in `keywords/mi.json` are **draft placeholders**. They have **not** been reviewed or validated by fluent te reo Māori speakers. Before this is used with learners, those keywords need to be reviewed, and likely changed, by people with the right cultural and linguistic expertise.
 
 If you are a te reo speaker interested in helping refine the keywords, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -28,16 +32,16 @@ If you are a te reo speaker interested in helping refine the keywords, see [CONT
 
 ## Why
 
-The NZ Digital Technologies curriculum has required all students — including those in kura kaupapa Māori — to learn computational thinking and programming since 2020. But every mainstream programming language and coding tool operates in English. That means teachers in full-immersion kura face a choice: break the kaupapa to teach coding, or skip it.
+The [NZ Digital Technologies curriculum](https://newzealandcurriculum.tahurangi.education.govt.nz/the-new-zealand-curriculum---technology/5637209125.p) has required all students to learn computational thinking and programming since 2020. But every mainstream programming language and coding tool operates in English. That means teachers in full-immersion kura face a choice: break the kaupapa to teach coding, or skip it.
 
-PyReo exists to close that gap. It's intentionally thin: the language is free and open-source, so adoption has no friction. The value lives in the curriculum and pedagogy that gets built on top — and that's the part that has to be co-designed with kaiako and kura.
+PyReo exists to close that gap. It's intentionally thin: the language is free and open-source, so adoption has no friction. The value lives in the curriculum and pedagogy that gets built on top, and that's the part that has to be co-designed with kaiako and kura.
 
 ## Install
 
 Requires Python 3.12+ and [uv](https://docs.astral.sh/uv/).
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/pyreo.git
+git clone https://github.com/b-j-karl/pyreo.git
 cd pyreo
 uv sync
 ```
@@ -122,21 +126,19 @@ PyReo is a source-to-source transpiler:
 4. **Restore** the protected strings/comments
 5. **Execute** the resulting standard Python
 
-The keyword mappings live in [`keywords/mi.json`](keywords/mi.json). To change a keyword, edit the JSON — no code changes needed.
+The keyword mappings live in [`keywords/mi.json`](keywords/mi.json). To change a keyword, edit the JSON. No code changes are needed.
 
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). There are two very different ways to help:
 
-- **Te reo Māori expertise** — review the keyword choices in `mi.json`. This does **not** require coding knowledge. The most valuable contribution to this project right now.
-- **Code** — transpiler improvements, the language server, the VS Code extension, tests.
+- **Te reo Māori expertise**: review the keyword choices in `mi.json`. This does **not** require coding knowledge. The most valuable contribution to this project right now.
+- **Code**: transpiler improvements, the language server, the VS Code extension, tests.
 
 ## Acknowledgements
 
-- **Citrine** ([citrine-lang.org](https://citrine-lang.org)) — the only other general-purpose programming language with a te reo Māori keyword set. A reference point while designing PyReo's keyword dictionary.
-- **Hedy** ([hedy.org](https://hedy.org)) — Felienne Hermans' gradual multilingual educational language, which demonstrated that native-language keywords work for young learners.
-- **OMGTech!** — a decade of mahi bringing tech education to Māori and Pasifika learners, including Hour of Code tutorials in te reo. Closed in 2024 after MoE funding was reprioritised. PyReo tries to pick up some of that baton.
-- **Tim Bell** and the University of Canterbury CS Unplugged team, for years of work making computational thinking accessible in Aotearoa.
+- **Citrine** ([citrine-lang.org](https://citrine-lang.org)): the only other general-purpose programming language with a te reo Māori keyword set. A reference point while designing PyReo's keyword dictionary.
+- **Hedy** ([hedy.org](https://hedy.org)): Felienne Hermans' gradual multilingual educational language, which demonstrated that native-language keywords work for young learners.
 
 ## License
 

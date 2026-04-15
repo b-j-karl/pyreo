@@ -2,21 +2,21 @@
 
 ## Kaupapa
 
-PyReo is a tool built for kura kaupapa Māori and the wider Māori community. Anyone contributing to this project — in any form — is expected to act with the same respect that the learners this tool serves deserve.
+PyReo is a tool built for kura kaupapa Māori and the wider Māori community. Anyone contributing to this project in any form is expected to act with the same respect that the learners this tool serves deserve.
 
 ## Te Tiriti o Waitangi
 
 This project operates with respect for Te Tiriti o Waitangi. In practice, this means:
 
-- **Tino rangatiratanga** — Māori have authority over mātauranga Māori, te reo Māori, and decisions about how both are represented in this project. Non-Māori contributors must follow the lead of Māori contributors on linguistic and cultural matters.
-- **Partnership** — code contributors and te reo contributors are equal partners. Neither is subordinate to the other.
-- **Active protection** — we protect the integrity of te reo Māori in this project. Poor or disrespectful translations will not be merged, even if technically functional.
+- **Tino rangatiratanga**: Māori have authority over mātauranga Māori, te reo Māori, and decisions about how both are represented in this project.
+- **Partnership**: code contributors and te reo contributors are equal partners. Neither is subordinate to the other.
+- **Active protection**: we protect the integrity of te reo Māori in this project.
 
 ## Expected behaviour
 
 - Treat everyone with respect
 - Listen before speaking, especially on topics outside your expertise
-- Accept correction gracefully — particularly around te reo Māori and tikanga
+- Accept correction gracefully.
 - Credit contributions, including non-code contributions
 - Ask rather than assume
 
@@ -28,12 +28,6 @@ This project operates with respect for Te Tiriti o Waitangi. In practice, this m
 - Attempting to override te reo expertise with code authority, or vice versa
 - Using this project to push political agendas unrelated to Māori-medium education
 
-## Language and translation
-
-- Te reo Māori contributions and decisions take precedence on linguistic matters
-- Non-fluent speakers should not unilaterally change keyword translations
-- If there's disagreement about a translation, defer to the contributor with the deeper linguistic and cultural knowledge
-- If that's not clear, open an issue and invite kōrero
 
 ## Reporting
 

@@ -140,11 +140,11 @@ function generate() {
   const k2EntryAngle = k2TipAngle + turns * 2 * Math.PI;
   const pEnd = [k2cx + endR * Math.cos(k2EntryAngle), k2cy + endR * Math.sin(k2EntryAngle)];
 
-  // Koru 2 entry tangent
+  // Koru 2 entry tangent (mirror koru 1's radius profile for symmetry)
   const tSmall = 1 / n3;
   const a2next = k2EntryAngle - tSmall * turns * 2 * Math.PI;
-  const e2 = Math.pow(tSmall, ease);
-  const r2next = endR + e2 * (tipR - endR);
+  const e2 = Math.pow(1 - tSmall, ease);
+  const r2next = tipR + e2 * (endR - tipR);
   const pk2next = [k2cx + r2next * Math.cos(a2next), k2cy + r2next * Math.sin(a2next)];
   let dx2 = pk2next[0] - pEnd[0], dy2 = pk2next[1] - pEnd[1];
   let len2 = Math.sqrt(dx2*dx2 + dy2*dy2);
@@ -167,12 +167,12 @@ function generate() {
     ]);
   }
 
-  // Koru 2: wide end → tip
+  // Koru 2: wide end -> tip (mirror koru 1 under 180 deg rotation)
   for (let i = 1; i <= n3; i++) {
     const t = i / n3;
     const angle = k2EntryAngle - t * turns * 2 * Math.PI;
-    const e = Math.pow(t, ease);
-    const r = endR + e * (tipR - endR);
+    const e = Math.pow(1 - t, ease);
+    const r = tipR + e * (endR - tipR);
     points.push([k2cx + r * Math.cos(angle), k2cy + r * Math.sin(angle)]);
   }
 
@@ -211,8 +211,8 @@ function generate() {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}">
   <defs><clipPath id="rounded"><rect width="${SIZE}" height="${SIZE}" rx="14"/></clipPath></defs>
   <g clip-path="url(#rounded)">
-    <rect width="${SIZE}" height="${SIZE}" fill="#CC2229"/>
-    <rect y="${SIZE/2}" width="${SIZE}" height="${SIZE/2}" fill="#1a1a1a"/>
+    <rect width="${SIZE}" height="${SIZE}" fill="#1a1a1a"/>
+    <rect y="${SIZE/2}" width="${SIZE}" height="${SIZE/2}" fill="#CC2229"/>
     <path d="${d}" fill="#FFFFFF"/>
   </g>
 </svg>`;

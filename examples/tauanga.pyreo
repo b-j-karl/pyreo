@@ -1,4 +1,4 @@
-# Tauanga — Counting in te reo Māori
+# Tauanga - Counting in te reo Māori
 
 tau_maori = ["tahi", "rua", "toru", "whā", "rima", "ono", "whitu", "waru", "iwa", "tekau"]
 
@@ -8,7 +8,7 @@ mō i i tūemi(roa(tau_maori)):
 
 tā()
 
-# Tapeke — Sum
+# Tapeke - Sum
 tau_rārangi = [3, 7, 2, 9, 1]
 tapeke_hua = tapeke(tau_rārangi)
 tōrahi_hua = tōrahi(tau_rārangi)

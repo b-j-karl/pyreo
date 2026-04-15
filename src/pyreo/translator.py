@@ -46,12 +46,12 @@ def translate(source: str, dictionary: Dictionary) -> str:
             protected,
         )
 
-        # Step 2: membership-test use — `EXPR i COLLECTION`.
+        # Step 2: membership-test use - `EXPR i COLLECTION`.
         # Only replace `i` when it follows a closing bracket/paren or a word
         # that is NOT a Python keyword (to avoid matching `for i` where `for`
         # ends with `r`, a word char).  We exclude matches preceded by Python
         # keywords by requiring the preceding character to be `)`, `]`, `}`,
-        # or a digit — safe non-keyword endings.  Identifier endings that could
+        # or a digit - safe non-keyword endings.  Identifier endings that could
         # be Python keywords are left to be handled by user-facing variables;
         # this is an acceptable limitation for the MVP.
         protected = re.sub(
@@ -62,7 +62,7 @@ def translate(source: str, dictionary: Dictionary) -> str:
 
     for maori, python in mappings.items():
         if maori == _in_kw:
-            # Already handled above — skip to avoid clobbering variable names.
+            # Already handled above - skip to avoid clobbering variable names.
             continue
         # Use word-boundary regex to avoid partial matches.
         # re.UNICODE is default in Python 3, so \b handles macrons correctly.

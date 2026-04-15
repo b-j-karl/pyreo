@@ -1,4 +1,4 @@
-# Kemu Matapōkere — Number Guessing Game
+# Kemu Matapōkere - Number Guessing Game
 
 mai random kawemai randint
 
@@ -15,9 +15,9 @@ ia ngana_toenga > 0:
         tā("Ka pai! Tika tō matapōkere! 🎉")
         waea
     menaranei matapōkere < tau_huna:
-        tā("Kei raro rawa — whakamātau anō")
+        tā("Kei raro rawa - whakamātau anō")
     kē:
-        tā("Kei runga rawa — whakamātau anō")
+        tā("Kei runga rawa - whakamātau anō")
 
     ngana_toenga = ngana_toenga - 1
     mena ngana_toenga > 0:

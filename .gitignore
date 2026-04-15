@@ -26,3 +26,7 @@ Thumbs.db
 # Project
 *.swp
 *~
+
+# Local tooling / scratch
+.claude/
+docs/plans/
