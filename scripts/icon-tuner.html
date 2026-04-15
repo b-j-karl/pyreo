@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PyReo Icon Tuner</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #222; color: #eee; display: flex; height: 100vh; }
+  #controls { width: 340px; padding: 16px; overflow-y: auto; background: #2a2a2a; flex-shrink: 0; }
+  #preview { flex: 1; display: flex; align-items: center; justify-content: center; }
+  #preview svg { width: min(80vh, 80vw); height: min(80vh, 80vw); }
+  h2 { font-size: 14px; color: #CC2229; margin: 16px 0 8px; border-bottom: 1px solid #444; padding-bottom: 4px; }
+  h2:first-child { margin-top: 0; }
+  .param { margin-bottom: 10px; }
+  .param label { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 2px; }
+  .param label span { color: #aaa; }
+  .param input[type=range] { width: 100%; accent-color: #CC2229; }
+  #export-btn { margin-top: 16px; width: 100%; padding: 10px; background: #CC2229; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; }
+  #export-btn:hover { background: #e02530; }
+  .sizes { display: flex; gap: 12px; align-items: flex-end; margin-top: 12px; padding: 12px 0; border-top: 1px solid #444; }
+  .sizes svg { background: #333; border-radius: 4px; }
+  .sizes span { font-size: 10px; color: #888; }
+  .size-label { text-align: center; }
+</style>
+</head>
+<body>
+
+<div id="controls">
+  <h2>Koru Spiral</h2>
+  <div class="param">
+    <label>Center offset from corner <span id="v_center">30</span></label>
+    <input type="range" id="center" min="16" max="50" value="30" step="1">
+  </div>
+  <div class="param">
+    <label>Tip radius <span id="v_tipR">3</span></label>
+    <input type="range" id="tipR" min="1" max="10" value="3" step="0.5">
+  </div>
+  <div class="param">
+    <label>End radius <span id="v_endR">32</span></label>
+    <input type="range" id="endR" min="16" max="50" value="32" step="1">
+  </div>
+  <div class="param">
+    <label>Turns <span id="v_turns">1.6</span></label>
+    <input type="range" id="turns" min="0.8" max="2.5" value="1.6" step="0.05">
+  </div>
+  <div class="param">
+    <label>Tip angle (×π) <span id="v_tipAngle">0.8</span></label>
+    <input type="range" id="tipAngle" min="0.0" max="2.0" value="0.8" step="0.05">
+  </div>
+  <div class="param">
+    <label>Radius ease power <span id="v_ease">0.7</span></label>
+    <input type="range" id="ease" min="0.3" max="1.5" value="0.7" step="0.05">
+  </div>
+
+  <h2>Bridge</h2>
+  <div class="param">
+    <label>Tension <span id="v_tension">0.6</span></label>
+    <input type="range" id="tension" min="0.1" max="1.5" value="0.6" step="0.05">
+  </div>
+
+  <h2>Ribbon</h2>
+  <div class="param">
+    <label>Min half-width (tips) <span id="v_wMin">1.5</span></label>
+    <input type="range" id="wMin" min="0.5" max="5" value="1.5" step="0.25">
+  </div>
+  <div class="param">
+    <label>Max half-width (middle) <span id="v_wMax">7</span></label>
+    <input type="range" id="wMax" min="3" max="14" value="7" step="0.5">
+  </div>
+  <div class="param">
+    <label>Taper length <span id="v_taper">0.12</span></label>
+    <input type="range" id="taper" min="0.03" max="0.3" value="0.12" step="0.01">
+  </div>
+
+  <button id="export-btn">Copy SVG to clipboard</button>
+
+  <div class="sizes">
+    <div class="size-label"><div id="sz128"></div><span>128px</span></div>
+    <div class="size-label"><div id="sz64"></div><span>64px</span></div>
+    <div class="size-label"><div id="sz32"></div><span>32px</span></div>
+    <div class="size-label"><div id="sz16"></div><span>16px</span></div>
+  </div>
+</div>
+
+<div id="preview"></div>
+
+<script>
+const SIZE = 128;
+const N = 900;
+
+function getVal(id) {
+  return parseFloat(document.getElementById(id).value);
+}
+
+function generate() {
+  const center = getVal('center');
+  const tipR = getVal('tipR');
+  const endR = getVal('endR');
+  const turns = getVal('turns');
+  const tipAnglePi = getVal('tipAngle');
+  const ease = getVal('ease');
+  const tensionFactor = getVal('tension');
+  const wMin = getVal('wMin');
+  const wMax = getVal('wMax');
+  const taperLen = getVal('taper');
+
+  // Update display values
+  for (const id of ['center','tipR','endR','turns','tipAngle','ease','tension','wMin','wMax','taper']) {
+    document.getElementById('v_'+id).textContent = getVal(id);
+  }
+
+  const k1cx = center, k1cy = center;
+  const k2cx = SIZE - center, k2cy = SIZE - center;
+  const k1TipAngle = Math.PI * tipAnglePi;
+  const k2TipAngle = Math.PI * (tipAnglePi + 1);
+
+  // --- Build spine ---
+  const points = [];
+  const n1 = Math.floor(N / 3);
+  const n2 = Math.floor(N / 3);
+  const n3 = Math.floor(N / 3);
+
+  // Koru 1: tip → wide end
+  for (let i = 0; i <= n1; i++) {
+    const t = i / n1;
+    const angle = k1TipAngle + t * turns * 2 * Math.PI;
+    const e = Math.pow(t, ease);
+    const r = tipR + e * (endR - tipR);
+    points.push([k1cx + r * Math.cos(angle), k1cy + r * Math.sin(angle)]);
+  }
+
+  // Bridge: Hermite interpolation
+  const pStart = points[points.length - 1];
+  const pPrev = points[points.length - 3];
+  let dx1 = pStart[0] - pPrev[0], dy1 = pStart[1] - pPrev[1];
+  let len1 = Math.sqrt(dx1*dx1 + dy1*dy1);
+  const tx1 = dx1/len1, ty1 = dy1/len1;
+
+  // Koru 2 entry point
+  const k2EntryAngle = k2TipAngle + turns * 2 * Math.PI;
+  const pEnd = [k2cx + endR * Math.cos(k2EntryAngle), k2cy + endR * Math.sin(k2EntryAngle)];
+
+  // Koru 2 entry tangent
+  const tSmall = 1 / n3;
+  const a2next = k2EntryAngle - tSmall * turns * 2 * Math.PI;
+  const e2 = Math.pow(tSmall, ease);
+  const r2next = endR + e2 * (tipR - endR);
+  const pk2next = [k2cx + r2next * Math.cos(a2next), k2cy + r2next * Math.sin(a2next)];
+  let dx2 = pk2next[0] - pEnd[0], dy2 = pk2next[1] - pEnd[1];
+  let len2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+  const tx2 = dx2/len2, ty2 = dy2/len2;
+
+  const bridgeLen = Math.sqrt((pEnd[0]-pStart[0])**2 + (pEnd[1]-pStart[1])**2);
+  const tension = bridgeLen * tensionFactor;
+  const m0x = tx1*tension, m0y = ty1*tension;
+  const m1x = tx2*tension, m1y = ty2*tension;
+
+  for (let i = 1; i <= n2; i++) {
+    const t = i / n2;
+    const h00 = (1+2*t)*(1-t)*(1-t);
+    const h10 = t*(1-t)*(1-t);
+    const h01 = t*t*(3-2*t);
+    const h11 = t*t*(t-1);
+    points.push([
+      h00*pStart[0] + h10*m0x + h01*pEnd[0] + h11*m1x,
+      h00*pStart[1] + h10*m0y + h01*pEnd[1] + h11*m1y
+    ]);
+  }
+
+  // Koru 2: wide end → tip
+  for (let i = 1; i <= n3; i++) {
+    const t = i / n3;
+    const angle = k2EntryAngle - t * turns * 2 * Math.PI;
+    const e = Math.pow(t, ease);
+    const r = endR + e * (tipR - endR);
+    points.push([k2cx + r * Math.cos(angle), k2cy + r * Math.sin(angle)]);
+  }
+
+  // --- Normals ---
+  const normals = [];
+  for (let i = 0; i < points.length; i++) {
+    let dx, dy;
+    if (i === 0) { dx = points[1][0]-points[0][0]; dy = points[1][1]-points[0][1]; }
+    else if (i === points.length-1) { dx = points[i][0]-points[i-1][0]; dy = points[i][1]-points[i-1][1]; }
+    else { dx = points[i+1][0]-points[i-1][0]; dy = points[i+1][1]-points[i-1][1]; }
+    const l = Math.sqrt(dx*dx+dy*dy) || 0.001;
+    normals.push([-dy/l, dx/l]);
+  }
+
+  // --- Ribbon ---
+  const left = [], right = [];
+  for (let i = 0; i < points.length; i++) {
+    const t = i / (points.length-1);
+    const tapIn = Math.min(t/taperLen, 1);
+    const tapOut = Math.min((1-t)/taperLen, 1);
+    let tap = Math.min(tapIn, tapOut);
+    tap = tap*tap*(3-2*tap);
+    const w = wMin + tap * (wMax - wMin);
+    const [nx,ny] = normals[i];
+    const [px,py] = points[i];
+    left.push([px+nx*w, py+ny*w]);
+    right.push([px-nx*w, py-ny*w]);
+  }
+
+  let d = `M ${left[0][0].toFixed(2)},${left[0][1].toFixed(2)}`;
+  for (let i = 1; i < left.length; i++) d += ` L ${left[i][0].toFixed(2)},${left[i][1].toFixed(2)}`;
+  d += ` A 2,2 0 0,1 ${right[right.length-1][0].toFixed(2)},${right[right.length-1][1].toFixed(2)}`;
+  for (let i = right.length-1; i >= 0; i--) d += ` L ${right[i][0].toFixed(2)},${right[i][1].toFixed(2)}`;
+  d += ` A 2,2 0 0,1 ${left[0][0].toFixed(2)},${left[0][1].toFixed(2)} Z`;
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}">
+  <defs><clipPath id="rounded"><rect width="${SIZE}" height="${SIZE}" rx="14"/></clipPath></defs>
+  <g clip-path="url(#rounded)">
+    <rect width="${SIZE}" height="${SIZE}" fill="#CC2229"/>
+    <rect y="${SIZE/2}" width="${SIZE}" height="${SIZE/2}" fill="#1a1a1a"/>
+    <path d="${d}" fill="#FFFFFF"/>
+  </g>
+</svg>`;
+
+  document.getElementById('preview').innerHTML = svg;
+  document.getElementById('sz128').innerHTML = `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="128" height="128">${svg.replace(/<\/?svg[^>]*>/g,'')}</svg>`;
+  document.getElementById('sz64').innerHTML = `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="64" height="64">${svg.replace(/<\/?svg[^>]*>/g,'')}</svg>`;
+  document.getElementById('sz32').innerHTML = `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="32" height="32">${svg.replace(/<\/?svg[^>]*>/g,'')}</svg>`;
+  document.getElementById('sz16').innerHTML = `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="16" height="16">${svg.replace(/<\/?svg[^>]*>/g,'')}</svg>`;
+
+  return svg;
+}
+
+// Bind all sliders
+document.querySelectorAll('input[type=range]').forEach(el => {
+  el.addEventListener('input', generate);
+});
+
+// Export
+document.getElementById('export-btn').addEventListener('click', () => {
+  const svg = generate();
+  navigator.clipboard.writeText(svg).then(() => {
+    const btn = document.getElementById('export-btn');
+    btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy SVG to clipboard', 1500);
+  });
+});
+
+generate();
+</script>
+</body>
+</html>
