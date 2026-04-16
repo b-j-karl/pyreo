@@ -1,0 +1,7 @@
+.vscode/**
+.vscodeignore
+generate.py
+package-lock.json
+icon.svg
+node_modules/
+**/.DS_Store
