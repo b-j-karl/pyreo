@@ -15,6 +15,7 @@ class TestCLIRun:
             [*PYREO, "run", str(fixtures_dir / "kia_ora.pyreo")],
             capture_output=True,
             text=True,
+            encoding="utf-8",
             cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
@@ -25,6 +26,7 @@ class TestCLIRun:
             [*PYREO, "run", "nonexistent.pyreo"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
             cwd=PROJECT_ROOT,
         )
         assert result.returncode != 0
@@ -37,6 +39,7 @@ class TestCLITranslate:
             [*PYREO, "translate", str(fixtures_dir / "kia_ora.pyreo")],
             capture_output=True,
             text=True,
+            encoding="utf-8",
             cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
@@ -49,6 +52,7 @@ class TestCLIVersion:
             [*PYREO, "--version"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
             cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0
@@ -61,6 +65,7 @@ class TestCLIHelp:
             [*PYREO, "--help"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
             cwd=PROJECT_ROOT,
         )
         assert result.returncode == 0

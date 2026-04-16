@@ -1,6 +1,6 @@
 # PyReo for VS Code
 
-Language support for [PyReo](https://github.com/b-j-karl/pyreo), Python in te reo Maori.
+Language support for [PyReo](https://github.com/b-j-karl/pyreo), Python in te reo Māori.
 
 ## Features
 

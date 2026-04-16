@@ -1,7 +1,7 @@
 {
   "name": "pyreo",
   "displayName": "PyReo",
-  "description": "Language support for PyReo - Python in te reo Maori",
+  "description": "Language support for PyReo - Python in te reo Māori",
   "version": "0.2.0",
   "publisher": "pyreo",
   "license": "MIT",

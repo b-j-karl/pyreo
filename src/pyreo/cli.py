@@ -34,7 +34,7 @@ def main(argv: list[str] | None = None) -> None:
 
     parser = argparse.ArgumentParser(
         prog="pyreo",
-        description="PyReo - Write Python in te reo Maori",
+        description="PyReo - Write Python in te reo Māori",
     )
     parser.add_argument(
         "--version", action="version", version=f"pyreo {__version__}"
