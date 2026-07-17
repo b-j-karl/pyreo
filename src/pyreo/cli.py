@@ -6,23 +6,9 @@ from pathlib import Path
 
 from pyreo import __version__
 from pyreo.dictionary import load_dictionary, DictionaryError
+from pyreo.keywords import find_keywords_file
 from pyreo.runner import run_file, PyReoError
 from pyreo.translator import translate
-
-
-def _find_dictionary() -> Path:
-    """Find the keyword dictionary, checking common locations."""
-    candidates = [
-        Path.cwd() / "keywords" / "mi.json",
-        Path(__file__).parent.parent.parent / "keywords" / "mi.json",
-    ]
-    for path in candidates:
-        if path.exists():
-            return path
-    raise DictionaryError(
-        "Could not find keywords/mi.json. "
-        "Run pyreo from the project root or set PYREO_KEYWORDS env var."
-    )
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -62,7 +48,7 @@ def main(argv: list[str] | None = None) -> None:
         return
 
     try:
-        dict_path = args.keywords if args.keywords else _find_dictionary()
+        dict_path = args.keywords if args.keywords else find_keywords_file()
         dictionary = load_dictionary(dict_path)
     except DictionaryError as e:
         print(f"Error: {e}", file=sys.stderr)

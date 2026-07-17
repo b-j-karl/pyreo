@@ -1,4 +1,4 @@
-"""Generate VS Code grammar and language config from keywords/mi.json.
+"""Generate VS Code grammar and language config from src/pyreo/keywords/mi.json.
 
 Run from the pyreo project root:
     uv run python vscode-pyreo/generate.py
@@ -11,7 +11,7 @@ import re
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).parent.parent
-KEYWORDS_FILE = PROJECT_ROOT / "keywords" / "mi.json"
+KEYWORDS_FILE = PROJECT_ROOT / "src" / "pyreo" / "keywords" / "mi.json"
 GRAMMAR_FILE = Path(__file__).parent / "syntaxes" / "pyreo.tmLanguage.json"
 LANG_CONFIG_FILE = Path(__file__).parent / "language-configuration.json"
 
@@ -114,7 +114,7 @@ def generate_grammar(data: dict) -> dict:
         "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
         "name": "PyReo",
         "scopeName": "source.pyreo",
-        "_generated": "This file is auto-generated from keywords/mi.json. Do not edit manually. Run: uv run python vscode-pyreo/generate.py",
+        "_generated": "This file is auto-generated from src/pyreo/keywords/mi.json. Do not edit manually. Run: uv run python vscode-pyreo/generate.py",
         "patterns": [
             {"include": "#comments"},
             {"include": "#strings"},
@@ -137,57 +137,164 @@ def generate_grammar(data: dict) -> dict:
             },
             "strings": {
                 "patterns": [
-                    {
-                        "name": "string.quoted.triple.double.pyreo",
-                        "begin": 'f?"""',
-                        "end": '"""',
-                        "patterns": [
-                            {"include": "#string-escapes"},
-                            {"include": "#fstring-expressions"},
-                        ],
-                    },
-                    {
-                        "name": "string.quoted.triple.single.pyreo",
-                        "begin": "f?'''",
-                        "end": "'''",
-                        "patterns": [
-                            {"include": "#string-escapes"},
-                            {"include": "#fstring-expressions"},
-                        ],
-                    },
-                    {
-                        "name": "string.quoted.double.pyreo",
-                        "begin": 'f?"',
-                        "end": '"',
-                        "patterns": [
-                            {"include": "#string-escapes"},
-                            {"include": "#fstring-expressions"},
-                        ],
-                    },
-                    {
-                        "name": "string.quoted.single.pyreo",
-                        "begin": "f?'",
-                        "end": "'",
-                        "patterns": [
-                            {"include": "#string-escapes"},
-                            {"include": "#fstring-expressions"},
-                        ],
-                    },
+                    {"include": "#fstring-triple-double"},
+                    {"include": "#fstring-triple-single"},
+                    {"include": "#fstring-double"},
+                    {"include": "#fstring-single"},
+                    {"include": "#string-triple-double"},
+                    {"include": "#string-triple-single"},
+                    {"include": "#string-double"},
+                    {"include": "#string-single"},
                 ],
+            },
+            "fstring-triple-double": {
+                "name": "meta.fstring.pyreo string.quoted.triple.double.pyreo",
+                "begin": '([fF])(""")',
+                "beginCaptures": {
+                    "1": {"name": "storage.type.string.pyreo"},
+                    "2": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "end": '(""")',
+                "endCaptures": {
+                    "1": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [
+                    {"include": "#fstring-escaped-braces"},
+                    {"include": "#fstring-expression"},
+                    {"include": "#string-escapes"},
+                ],
+            },
+            "fstring-triple-single": {
+                "name": "meta.fstring.pyreo string.quoted.triple.single.pyreo",
+                "begin": "([fF])(''')",
+                "beginCaptures": {
+                    "1": {"name": "storage.type.string.pyreo"},
+                    "2": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "end": "(''')",
+                "endCaptures": {
+                    "1": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [
+                    {"include": "#fstring-escaped-braces"},
+                    {"include": "#fstring-expression"},
+                    {"include": "#string-escapes"},
+                ],
+            },
+            "fstring-double": {
+                "name": "meta.fstring.pyreo string.quoted.double.pyreo",
+                "begin": '([fF])(")',
+                "beginCaptures": {
+                    "1": {"name": "storage.type.string.pyreo"},
+                    "2": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "end": '(")',
+                "endCaptures": {
+                    "1": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [
+                    {"include": "#fstring-escaped-braces"},
+                    {"include": "#fstring-expression"},
+                    {"include": "#string-escapes"},
+                ],
+            },
+            "fstring-single": {
+                "name": "meta.fstring.pyreo string.quoted.single.pyreo",
+                "begin": "([fF])(')",
+                "beginCaptures": {
+                    "1": {"name": "storage.type.string.pyreo"},
+                    "2": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "end": "(')",
+                "endCaptures": {
+                    "1": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [
+                    {"include": "#fstring-escaped-braces"},
+                    {"include": "#fstring-expression"},
+                    {"include": "#string-escapes"},
+                ],
+            },
+            "string-triple-double": {
+                "name": "string.quoted.triple.double.pyreo",
+                "begin": '"""',
+                "end": '"""',
+                "beginCaptures": {
+                    "0": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "endCaptures": {
+                    "0": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [{"include": "#string-escapes"}],
+            },
+            "string-triple-single": {
+                "name": "string.quoted.triple.single.pyreo",
+                "begin": "'''",
+                "end": "'''",
+                "beginCaptures": {
+                    "0": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "endCaptures": {
+                    "0": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [{"include": "#string-escapes"}],
+            },
+            "string-double": {
+                "name": "string.quoted.double.pyreo",
+                "begin": '"',
+                "end": '"',
+                "beginCaptures": {
+                    "0": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "endCaptures": {
+                    "0": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [{"include": "#string-escapes"}],
+            },
+            "string-single": {
+                "name": "string.quoted.single.pyreo",
+                "begin": "'",
+                "end": "'",
+                "beginCaptures": {
+                    "0": {"name": "punctuation.definition.string.begin.pyreo"},
+                },
+                "endCaptures": {
+                    "0": {"name": "punctuation.definition.string.end.pyreo"},
+                },
+                "patterns": [{"include": "#string-escapes"}],
             },
             "string-escapes": {
                 "match": "\\\\.",
                 "name": "constant.character.escape.pyreo",
             },
-            "fstring-expressions": {
-                "begin": "\\{",
-                "end": "\\}",
-                "name": "meta.fstring.pyreo",
+            "fstring-escaped-braces": {
+                "match": "\\{\\{|\\}\\}",
+                "name": "constant.character.escape.pyreo",
+            },
+            "fstring-expression": {
+                "begin": "(\\{)",
+                "beginCaptures": {
+                    "1": {"name": "punctuation.definition.template-expression.begin.pyreo"},
+                },
+                "end": "(\\})",
+                "endCaptures": {
+                    "1": {"name": "punctuation.definition.template-expression.end.pyreo"},
+                },
+                "contentName": "meta.embedded.line.pyreo",
                 "patterns": [
+                    {"include": "#fstring-expression-content"},
+                ],
+            },
+            "fstring-expression-content": {
+                "patterns": [
+                    {"include": "#strings"},
+                    {"include": "#numbers"},
+                    {"include": "#keywords-control"},
+                    {"include": "#keywords-operator"},
                     {"include": "#keywords-constant"},
                     {"include": "#builtins-functions"},
                     {"include": "#builtins-types"},
-                    {"include": "#numbers"},
+                    {"include": "#function-call"},
                 ],
             },
             "numbers": {

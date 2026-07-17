@@ -9,6 +9,7 @@ from pygls.lsp.server import LanguageServer
 
 from pyreo.descriptions import DescriptionEntry, load_descriptions
 from pyreo.dictionary import load_dictionary, Dictionary
+from pyreo.keywords import find_keywords_file
 from pyreo.translator import translate
 
 # Category → CompletionItemKind mapping
@@ -104,20 +105,14 @@ def get_diagnostics(
 
 
 def _find_keywords_dir() -> Path:
-    candidates = [
-        Path.cwd() / "keywords",
-        Path(__file__).parent.parent.parent / "keywords",
-    ]
-    for p in candidates:
-        if (p / "mi.json").exists():
-            return p
-    raise FileNotFoundError("Cannot find keywords/ directory")
+    return find_keywords_file("mi.json").parent
 
 
-def create_server() -> tuple[LanguageServer, Dictionary, dict[str, DescriptionEntry]]:
+def create_server(keywords_dir: Path | None = None) -> tuple[LanguageServer, Dictionary, dict[str, DescriptionEntry]]:
     server = LanguageServer("pyreo-lsp", "v0.1.0")
 
-    keywords_dir = _find_keywords_dir()
+    if keywords_dir is None:
+        keywords_dir = _find_keywords_dir()
     descriptions = load_descriptions(keywords_dir / "mi.descriptions.json")
     dictionary = load_dictionary(keywords_dir / "mi.json")
     completion_items = build_completion_items(descriptions)
@@ -155,12 +150,23 @@ def create_server() -> tuple[LanguageServer, Dictionary, dict[str, DescriptionEn
 
 
 def main():
+    import argparse
+
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
     if hasattr(sys.stderr, "reconfigure"):
         sys.stderr.reconfigure(encoding="utf-8")
 
-    server, _, _ = create_server()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--keywords", type=Path, help="Path to keywords/ directory")
+    args = parser.parse_args()
+
+    if args.keywords:
+        keywords_dir = args.keywords
+    else:
+        keywords_dir = _find_keywords_dir()
+
+    server, _, _ = create_server(keywords_dir)
     server.start_io()
 
 

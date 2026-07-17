@@ -91,3 +91,18 @@ class TestTranslate:
         source = "mai math kawemai sqrt"
         result = translate(source, dictionary)
         assert result == "from math import sqrt"
+
+    def test_translates_builtins_inside_fstrings(self, dictionary):
+        source = 'tā(f"Whakaroto: {tapeke(nama)}")'
+        result = translate(source, dictionary)
+        assert result == 'print(f"Whakaroto: {sum(nama)}")'
+
+    def test_translates_keywords_inside_fstrings(self, dictionary):
+        source = 'f"{roa(x)}"'
+        result = translate(source, dictionary)
+        assert result == 'f"{len(x)}"'
+
+    def test_fstring_preserves_literal_text(self, dictionary):
+        source = 'tā(f"mena is a keyword but this is literal {x}")'
+        result = translate(source, dictionary)
+        assert result == 'print(f"mena is a keyword but this is literal {x}")'
