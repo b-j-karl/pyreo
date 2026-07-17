@@ -24,10 +24,36 @@ class TestProtect:
         assert "mena" not in protected
         assert "x = 5" in protected
 
-    def test_protects_fstring(self):
+    def test_fstring_exposes_expressions(self):
         source = 'tā(f"ko {ingoa} tōku ingoa")'
         protected, tokens = protect(source)
         assert "tōku ingoa" not in protected
+        assert "ingoa" in protected  # expression is exposed
+
+    def test_fstring_protects_literal_text(self):
+        source = 'f"mena {x} kē"'
+        protected, tokens = protect(source)
+        assert "mena" not in protected
+        assert "kē" not in protected
+        assert "{x}" in protected
+
+    def test_fstring_escaped_braces(self):
+        source = 'f"{{not an expr}}"'
+        protected, tokens = protect(source)
+        restored = restore(protected, tokens)
+        assert restored == source
+
+    def test_fstring_multiple_expressions(self):
+        source = 'f"{x} and {y}"'
+        protected, tokens = protect(source)
+        assert "{x}" in protected
+        assert "{y}" in protected
+
+    def test_fstring_no_expressions(self):
+        source = 'f"plain text"'
+        protected, tokens = protect(source)
+        restored = restore(protected, tokens)
+        assert restored == source
 
     def test_preserves_code_outside_strings(self):
         source = 'mena x == 5:\n    tā("ae")'

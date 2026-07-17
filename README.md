@@ -24,7 +24,7 @@ tā(mihi("Aotearoa"))
 
 ## ⚠️ Draft status - not ready for educational use
 
-The te reo Māori keyword choices in `keywords/mi.json` are **draft placeholders**. They have **not** been reviewed or validated by fluent te reo Māori speakers. Before this is used with learners, those keywords need to be reviewed, and likely changed, by people with the right cultural and linguistic expertise.
+The te reo Māori keyword choices in `src/pyreo/keywords/mi.json` are **draft placeholders**. They have **not** been reviewed or validated by fluent te reo Māori speakers. Before this is used with learners, those keywords need to be reviewed, and likely changed, by people with the right cultural and linguistic expertise.
 
 If you are a te reo speaker interested in helping refine the keywords, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -88,8 +88,10 @@ A VS Code extension in `vscode-pyreo/` provides:
 To install locally:
 
 ```bash
-cp -r vscode-pyreo ~/.vscode/extensions/pyreo-pyreo-0.2.0
-cd vscode-pyreo && npm install
+cd vscode-pyreo
+npm install
+npm run package
+code --install-extension pyreo-0.2.0.vsix
 ```
 
 Then reload VS Code. Configure `pyreo.pythonPath` in settings if needed to point to a Python that has `pyreo` installed.
@@ -106,9 +108,9 @@ pyreo/
 │   ├── cli.py              # `pyreo run` and `pyreo translate`
 │   ├── server.py           # Language Server (autocomplete, hover, diagnostics)
 │   └── descriptions.py     # Load keyword descriptions
-├── keywords/
-│   ├── mi.json             # Te reo Māori keyword dictionary (draft)
-│   └── mi.descriptions.json  # Human-readable descriptions
+│   ├── keywords/
+│   │   ├── mi.json           # Te reo Māori keyword dictionary (draft)
+│   │   └── mi.descriptions.json  # Human-readable descriptions
 ├── examples/               # Example .pyreo programs
 ├── vscode-pyreo/           # VS Code extension (syntax + LSP client)
 ├── scripts/                # Dev tools (icon generator, tuner)
@@ -126,7 +128,7 @@ PyReo is a source-to-source transpiler:
 4. **Restore** the protected strings/comments
 5. **Execute** the resulting standard Python
 
-The keyword mappings live in [`keywords/mi.json`](keywords/mi.json). To change a keyword, edit the JSON. No code changes are needed.
+The keyword mappings live in [`src/pyreo/keywords/mi.json`](src/pyreo/keywords/mi.json). To change a keyword, edit the JSON. No code changes are needed.
 
 ## Contributing
 

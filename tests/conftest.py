@@ -10,4 +10,4 @@ def fixtures_dir():
 
 @pytest.fixture
 def keywords_dir():
-    return Path(__file__).parent.parent / "keywords"
+    return Path(__file__).parent.parent / "src" / "pyreo" / "keywords"
